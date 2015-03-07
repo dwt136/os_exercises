@@ -60,8 +60,8 @@ ucore lab实验
 尝试用qemu+gdb（or ECLIPSE-CDT）调试lab1
 - [x]   
 
-> make clean 
-> lab1：make 
+> make clean \
+> lab1：make \
 > debug命令行：make debug
 
 对于如下的代码段，请说明”：“后面的数字是什么含义
@@ -112,28 +112,28 @@ SETGATE(intr, 0,1,2,3);
 
 请分析 [list.h](https://github.com/chyyuu/ucore_lab/blob/master/labcodes/lab2/libs/list.h)内容中大致的含义，并能include这个文件，利用其结构和功能编写一个数据结构链表操作的小C程序
 - [x]  
+```
+// ---------- test_list.c ----------
+#include "list.h"
+#include 
 
-> // ---------- test_list.c ----------
-> #include "list.h"
-> #include 
->
-> int main() {
-> int i;
-> struct list_entry e[4];
-> for (i = 0; i < 4; i ++) {
-> list_init(e + i);
-> }
-> list_add_after(&e[0], &e[1]);
-> list_add_after(&e[1], &e[2]);
-> list_del_init(&e[0]);
-> printf("%d %d\n", list_next(&e[2]) == &e[1], list_prev(&e[1]) == &e[2]);
-> printf("%d %d\n", list_empty(&e[0]), list_empty(&e[1]));
-> return 0;
-> }
-> // Result:
-> // 1 1
-> // 1 0
-
+int main() {
+  int i;
+  struct list_entry e[4];
+  for (i = 0; i < 4; i ++) {
+    list_init(e + i);
+  }
+  list_add_after(&e[0], &e[1]);
+  list_add_after(&e[1], &e[2]);
+  list_del_init(&e[0]);
+  printf("%d %d\n", list_next(&e[2]) == &e[1], list_prev(&e[1]) == &e[2]);
+  printf("%d %d\n", list_empty(&e[0]), list_empty(&e[1]));
+  return 0;
+}
+// Result:
+// 1 1
+// 1 0
+```
 
 ---
 
