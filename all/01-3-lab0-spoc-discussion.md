@@ -60,9 +60,9 @@ ucore lab实验
 尝试用qemu+gdb（or ECLIPSE-CDT）调试lab1
 - [x]   
 
-> make clean \
-> lab1：make \
-> debug命令行：make debug
+> 1. 清除：make clean 
+> 2. 编译：lab1：make 
+> 3. debug命令行：make debug
 
 对于如下的代码段，请说明”：“后面的数字是什么含义
 ```
