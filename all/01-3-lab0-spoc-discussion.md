@@ -48,24 +48,21 @@
 搭建好实验环境，请描述碰到的困难和解决的过程。
 - [x]  
 
-> 困难：在virtualbox中设置虚拟机的时候找不到Linux的64位选项。
-> 解决：需要通过BIOS设置将电脑的虚拟化功能打开（本电脑LenovoY480的VT功能是锁的，需要打开）。
-> 开始时选择了UBUNTU 32位，不能启动，后来换成64位就能顺利运行
+> 使用课程提供的虚拟机文件，搭建完成。
 
 熟悉基本的git命令行操作命令，从github上
 的 http://www.github.com/chyyuu/ucore_lab 下载
 ucore lab实验
 - [x]  
 
-> clone 仓库 
-> gitclone http://www.github.com/chyyuu/ucore_lab
+> git clone http://www.github.com/chyyuu/ucore_lab
 
 尝试用qemu+gdb（or ECLIPSE-CDT）调试lab1
 - [x]   
 
-> 清除文件夹：make clean 
-> 编译lab1：make 
-> 调出debug命令行：make debug
+> make clean 
+> lab1：make 
+> debug命令行：make debug
 
 对于如下的代码段，请说明”：“后面的数字是什么含义
 ```
@@ -85,7 +82,7 @@ ucore lab实验
 
 - [x]  
 
-> 每一个filed(域，成员变量)在struct(结构)中所占的位数; 也称“位域”，用于表示这个成员变量占多少位(bit)。
+> 该字段所占的的长度(bit).
 
 对于如下的代码段，
 ```
@@ -109,14 +106,34 @@ SETGATE(intr, 0,1,2,3);
 ```
 请问执行上述指令后， intr的值是多少？
 
-- [x]  0x10002
+- [x]  65538
 
 > https://github.com/chyyuu/ucore_lab/blob/master/related_info/lab0/lab0_ex3.c
 
 请分析 [list.h](https://github.com/chyyuu/ucore_lab/blob/master/labcodes/lab2/libs/list.h)内容中大致的含义，并能include这个文件，利用其结构和功能编写一个数据结构链表操作的小C程序
 - [x]  
 
-> 
+> // ---------- test_list.c ----------
+> #include "list.h"
+> #include 
+>
+> int main() {
+> int i;
+> struct list_entry e[4];
+> for (i = 0; i < 4; i ++) {
+> list_init(e + i);
+> }
+> list_add_after(&e[0], &e[1]);
+> list_add_after(&e[1], &e[2]);
+> list_del_init(&e[0]);
+> printf("%d %d\n", list_next(&e[2]) == &e[1], list_prev(&e[1]) == &e[2]);
+> printf("%d %d\n", list_empty(&e[0]), list_empty(&e[1]));
+> return 0;
+> }
+> // Result:
+> // 1 1
+> // 1 0
+
 
 ---
 
@@ -127,6 +144,6 @@ SETGATE(intr, 0,1,2,3);
 是否愿意挑战大实验（大实验内容来源于你的想法或老师列好的题目，需要与老师协商确定，需完成基本lab，但可不参加闭卷考试），如果有，可直接给老师email或课后面谈。
 - [x]  
 
->  
+> 否
 
 ---
