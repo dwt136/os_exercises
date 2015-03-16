@@ -114,8 +114,11 @@ void free_pages(struct Node *node, struct Page *base) {
         }
         free_pages(node->left, base);
         node->free_pages = node->left->free_pages + node->right->free_pages;
-        if (node->free_pages == node->length) {
+        if (node->left->status == FREE && node->right->status == FREE) {
             node->status = FREE;
+            delete node->left;
+            delete node->right;
+            node->left = node->right = NULL;
             node->base->property = node->length;
         } else {
             node->status = USED;
@@ -124,8 +127,11 @@ void free_pages(struct Node *node, struct Page *base) {
         free_pages(node->left, base);
         free_pages(node->right, base);
         node->free_pages = node->left->free_pages + node->right->free_pages;
-        if (node->free_pages == node->length) {
+        if (node->left->status == FREE && node->right->status == FREE) {
             node->status = FREE;
+            delete node->left;
+            delete node->right;
+            node->left = node->right = NULL;
             node->base->property = node->length;
         } else {
             node->status = USED;
