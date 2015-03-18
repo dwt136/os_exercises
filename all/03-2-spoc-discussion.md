@@ -14,12 +14,8 @@ NOTICE
 
 （1） (w3l2) 请简要分析64bit CPU体系结构下的分页机制是如何实现的
 ```
-  + 采分点：说明64bit CPU架构的分页机制的大致特点和页表执行过程
-  - 答案没有涉及如下3点；（0分）
-  - 正确描述了64bit CPU支持的物理内存大小限制（1分）
-  - 正确描述了64bit CPU下的多级页表的级数和多级页表的结构或反置页表的结构（2分）
-  - 除上述两点外，进一步描述了在多级页表或反置页表下的虚拟地址-->物理地址的映射过程（3分）
- ```
+64bit的CPU低48位寻址，虚拟地址空间为256TB。采用四级标签页表，每级有9位。首先是PML4表，根据其索引到的基址到DirectoryPtr表，然后到Directory Entry表，和Table Entry表，得到的帧号加上最后11位的offset构成物理地址。
+```
 - [x]  
 
 >  
@@ -32,6 +28,7 @@ NOTICE
 - [x]  
 
 > 500=0.9\*150+0.1\*x
+> x=3650(ns)
 
 （2）(spoc) 有一台假想的计算机，页大小（page size）为32 Bytes，支持32KB的虚拟地址空间（virtual address space）,有4KB的物理内存空间（physical memory），采用二级页表，一个页目录项（page directory entry ，PDE）大小为1 Byte,一个页表项（page-table entries
 PTEs）大小为1 Byte，1个页目录表大小为32 Bytes，1个页表大小为32 Bytes。页目录基址寄存器（page directory base register，PDBR）保存了页目录表的物理地址（按页对齐）。
