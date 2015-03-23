@@ -41,7 +41,7 @@ x86保护模式中权限管理无处不在，下面哪些时候要检查访问�
 
 - [x]  
 
-> 
+> 没有设置中断处理向量，所以在发生中断时出错退出。
 
 （2）(spoc)假定你已经完成了lab1的实验,接下来是对lab1的中断处理的回顾：请把你的学号对37(十进制)取模，得到一个数x（x的范围是-1<x<37），然后在你的答案的基础上，修init.c中的kern_init函数，在大约36行处，即
 
@@ -56,7 +56,154 @@ x86保护模式中权限管理无处不在，下面哪些时候要检查访问�
 
 - [x]  
 
-> 
+> 加入之前，输出结果是
+
+```
+(THU.CST) os is loading ...
+
+Special kernel symbols:
+  entry  0x00100000 (phys)
+  etext  0x00103419 (phys)
+  edata  0x0010ea16 (phys)
+  end    0x0010fd20 (phys)
+Kernel executable memory footprint: 64KB
+ebp:0x00007b08 eip:0x001009a6 args:0x00010094 0x00000000 0x00007b38 0x00100092 
+    kern/debug/kdebug.c:306: print_stackframe+21
+ebp:0x00007b18 eip:0x00100c8f args:0x00000000 0x00000000 0x00000000 0x00007b88 
+    kern/debug/kmonitor.c:125: mon_backtrace+10
+ebp:0x00007b38 eip:0x00100092 args:0x00000000 0x00007b60 0xffff0000 0x00007b64 
+    kern/init/init.c:48: grade_backtrace2+33
+ebp:0x00007b58 eip:0x001000bb args:0x00000000 0xffff0000 0x00007b84 0x00000029 
+    kern/init/init.c:53: grade_backtrace1+38
+ebp:0x00007b78 eip:0x001000d9 args:0x00000000 0x00100000 0xffff0000 0x0000001d 
+    kern/init/init.c:58: grade_backtrace0+23
+ebp:0x00007b98 eip:0x001000fe args:0x0010343c 0x00103420 0x0000130a 0x00000000 
+    kern/init/init.c:63: grade_backtrace+34
+ebp:0x00007bc8 eip:0x00100055 args:0x00000000 0x00000000 0x00000000 0x00010094 
+    kern/init/init.c:28: kern_init+84
+ebp:0x00007bf8 eip:0x00007d68 args:0xc031fcfa 0xc08ed88e 0x64e4d08e 0xfa7502a8 
+    <unknow>: -- 0x00007d67 --
+ebp:0x00000000 eip:0x00007c4f args:0xf000e2c3 0xf000ff53 0xf000ff53 0xf000ff53 
+    <unknow>: -- 0x00007c4e --
+ebp:0xf000ff53 eip:0xf000ff53 args:0x00000000 0x00000000 0x00000000 0x00000000 
+    <unknow>: -- 0xf000ff52 --
+ebp:0x00000000 eip:0x00000000 args:0xf000e2c3 0xf000ff53 0xf000ff53 0xf000ff53 
+    <unknow>: -- 0xffffffff --
+ebp:0xf000ff53 eip:0xf000ff53 args:0x00000000 0x00000000 0x00000000 0x00000000 
+    <unknow>: -- 0xf000ff52 --
+ebp:0x00000000 eip:0x00000000 args:0xf000e2c3 0xf000ff53 0xf000ff53 0xf000ff53 
+    <unknow>: -- 0xffffffff --
+ebp:0xf000ff53 eip:0xf000ff53 args:0x00000000 0x00000000 0x00000000 0x00000000 
+    <unknow>: -- 0xf000ff52 --
+ebp:0x00000000 eip:0x00000000 args:0xf000e2c3 0xf000ff53 0xf000ff53 0xf000ff53 
+    <unknow>: -- 0xffffffff --
+ebp:0xf000ff53 eip:0xf000ff53 args:0x00000000 0x00000000 0x00000000 0x00000000 
+    <unknow>: -- 0xf000ff52 --
+ebp:0x00000000 eip:0x00000000 args:0xf000e2c3 0xf000ff53 0xf000ff53 0xf000ff53 
+    <unknow>: -- 0xffffffff --
+ebp:0xf000ff53 eip:0xf000ff53 args:0x00000000 0x00000000 0x00000000 0x00000000 
+    <unknow>: -- 0xf000ff52 --
+ebp:0x00000000 eip:0x00000000 args:0xf000e2c3 0xf000ff53 0xf000ff53 0xf000ff53 
+    <unknow>: -- 0xffffffff --
+ebp:0xf000ff53 eip:0xf000ff53 args:0x00000000 0x00000000 0x00000000 0x00000000 
+    <unknow>: -- 0xf000ff52 --
+++ setup timer interrupts
+100 ticks
+End of Test.
+kernel panic at kern/trap/trap.c:18:
+    EOT: kernel seems ok.
+Welcome to the kernel debug monitor!!
+Type 'help' for a list of commands.
+```
+
+> 加入之后，输出结果是
+
+```
+(THU.CST) os is loading ...
+
+Special kernel symbols:
+  entry  0x00100000 (phys)
+  etext  0x0010341b (phys)
+  edata  0x0010ea16 (phys)
+  end    0x0010fd20 (phys)
+Kernel executable memory footprint: 64KB
+ebp:0x00007b08 eip:0x001009a8 args:0x00010094 0x00000000 0x00007b38 0x00100094 
+    kern/debug/kdebug.c:306: print_stackframe+21
+ebp:0x00007b18 eip:0x00100c91 args:0x00000000 0x00000000 0x00000000 0x00007b88 
+    kern/debug/kmonitor.c:125: mon_backtrace+10
+ebp:0x00007b38 eip:0x00100094 args:0x00000000 0x00007b60 0xffff0000 0x00007b64 
+    kern/init/init.c:48: grade_backtrace2+33
+ebp:0x00007b58 eip:0x001000bd args:0x00000000 0xffff0000 0x00007b84 0x00000029 
+    kern/init/init.c:53: grade_backtrace1+38
+ebp:0x00007b78 eip:0x001000db args:0x00000000 0x00100000 0xffff0000 0x0000001d 
+    kern/init/init.c:58: grade_backtrace0+23
+ebp:0x00007b98 eip:0x00100100 args:0x0010343c 0x00103420 0x0000130a 0x00000000 
+    kern/init/init.c:63: grade_backtrace+34
+ebp:0x00007bc8 eip:0x00100055 args:0x00000000 0x00000000 0x00000000 0x00010094 
+    kern/init/init.c:28: kern_init+84
+ebp:0x00007bf8 eip:0x00007d68 args:0xc031fcfa 0xc08ed88e 0x64e4d08e 0xfa7502a8 
+    <unknow>: -- 0x00007d67 --
+ebp:0x00000000 eip:0x00007c4f args:0xf000e2c3 0xf000ff53 0xf000ff53 0xf000ff53 
+    <unknow>: -- 0x00007c4e --
+ebp:0xf000ff53 eip:0xf000ff53 args:0x00000000 0x00000000 0x00000000 0x00000000 
+    <unknow>: -- 0xf000ff52 --
+ebp:0x00000000 eip:0x00000000 args:0xf000e2c3 0xf000ff53 0xf000ff53 0xf000ff53 
+    <unknow>: -- 0xffffffff --
+ebp:0xf000ff53 eip:0xf000ff53 args:0x00000000 0x00000000 0x00000000 0x00000000 
+    <unknow>: -- 0xf000ff52 --
+ebp:0x00000000 eip:0x00000000 args:0xf000e2c3 0xf000ff53 0xf000ff53 0xf000ff53 
+    <unknow>: -- 0xffffffff --
+ebp:0xf000ff53 eip:0xf000ff53 args:0x00000000 0x00000000 0x00000000 0x00000000 
+    <unknow>: -- 0xf000ff52 --
+ebp:0x00000000 eip:0x00000000 args:0xf000e2c3 0xf000ff53 0xf000ff53 0xf000ff53 
+    <unknow>: -- 0xffffffff --
+ebp:0xf000ff53 eip:0xf000ff53 args:0x00000000 0x00000000 0x00000000 0x00000000 
+    <unknow>: -- 0xf000ff52 --
+ebp:0x00000000 eip:0x00000000 args:0xf000e2c3 0xf000ff53 0xf000ff53 0xf000ff53 
+    <unknow>: -- 0xffffffff --
+ebp:0xf000ff53 eip:0xf000ff53 args:0x00000000 0x00000000 0x00000000 0x00000000 
+    <unknow>: -- 0xf000ff52 --
+ebp:0x00000000 eip:0x00000000 args:0xf000e2c3 0xf000ff53 0xf000ff53 0xf000ff53 
+    <unknow>: -- 0xffffffff --
+ebp:0xf000ff53 eip:0xf000ff53 args:0x00000000 0x00000000 0x00000000 0x00000000 
+    <unknow>: -- 0xf000ff52 --
+++ setup timer interrupts
+trapframe at 0x7b5c
+  edi  0x00000001
+  esi  0x00000000
+  ebp  0x00007bc8
+  oesp 0x00007b7c
+  ebx  0x00010094
+  edx  0x000000a1
+  ecx  0x00000000
+  eax  0x000000ff
+  ds   0x----0010
+  es   0x----0010
+  fs   0x----0023
+  gs   0x----0023
+  trap 0x00000012
+  err  0x00000000
+  eip  0x00100070
+  cs   0x----0008
+  flag 0x00000207 CF,PF,IF,IOPL=0
+kernel panic at kern/trap/trap.c:181:
+    unexpected trap in kernel.
+
+Welcome to the kernel debug monitor!!
+Type 'help' for a list of commands.
+```
+
+> 因为在内核态发生了不允许出现的的中断（中断号2012011363 mod 37 == 18），根据trap/trap.c里中断处理程序中的
+
+```
+        if ((tf->tf_cs & 3) == 0) {
+            print_trapframe(tf);
+            panic("unexpected trap in kernel.\n");
+        }
+```
+
+> 先打印了trapframe的内容，然后出发panic中止了操作系统。
+
 
 （3）对于lab2的输出信息，请说明数字的含义
 ```
